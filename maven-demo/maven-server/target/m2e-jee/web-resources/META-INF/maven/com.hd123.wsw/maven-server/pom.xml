@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>maven-parent</artifactId>
+    <groupId>com.hd123.wsw</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+    <relativePath>..</relativePath>
+  </parent>
+  <artifactId>maven-server</artifactId>
+  <packaging>war</packaging>
+  <dependencies>
+   <dependency>
+      <groupId>com.hd123.wsw</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.hd123.wsw</groupId>
+      <artifactId>maven-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.hd123.wsw</groupId>
+      <artifactId>maven-rs</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+  <build/>
+</project>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 版权所有(C)，2014，上海海鼎信息工程股份有限公司，保留所有权利。 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+  xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:security="http://www.springframework.org/schema/security"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://cxf.apache.org/jaxrs
+    http://cxf.apache.org/schemas/jaxrs.xsd">
+
+  <import resource="classpath:META-INF/cxf/cxf.xml" />
+  <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+  
+<!-- cxf配置 -->
+  <jaxrs:server id="restService" address="/server">
+    <jaxrs:serviceBeans>
+      <bean id="personWebServiceImpl" class="com.hd123.wsw.rs.webserviceimpl.PersonWebServiceImpl">
+            <property name="personService" ref="personServiceImpl" />
+      </bean>
+      <bean id="userWebServiceImpl" class="com.hd123.wsw.rs.webserviceimpl.UserWebServiceImpl">
+            <property name="userService" ref="userServiceImpl" />
+      </bean>
+    </jaxrs:serviceBeans>
+    <jaxrs:inInterceptors>
+      <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
+    </jaxrs:inInterceptors>
+    <jaxrs:outInterceptors>
+      <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
+    </jaxrs:outInterceptors>
+  </jaxrs:server>
+
+</beans>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:aop="http://www.springframework.org/schema/aop" xmlns:task="http://www.springframework.org/schema/task"
+  xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/task   
+		http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+        http://cxf.apache.org/jaxrs 
+        http://cxf.apache.org/schemas/jaxrs.xsd">
+  <!-- 实现restful的引用 -->
+  <import resource="classpath:maven-rs.xml" />    
+  <import resource="classpath*:service-bean.xml" /> 
+  <import resource="classpath*:job-server.xml" />
+  <!-- 配置数据源 -->
+  <context:property-placeholder location="classpath:maven-core.properties" />
+  
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+    destroy-method="close">
+    <property name="driverClassName" value="${maven-core.dataSource.driverClassName:oracle.jdbc.driver.OracleDriver}" />
+    <property name="url" value="${maven-core.dataSource.url:jdbc:oracle:thin:@127.0.0.1:1521:orcl}" />
+    <property name="username" value="${maven-core.dataSource.username:test1}" />
+    <property name="password" value="${maven-core.dataSource.password:test1}" />
+    <property name="initialSize" value="${maven-core.dataSource.initialSize:0}" />
+    <property name="maxActive" value="${maven-core.dataSource.maxActive:8}" />
+    <property name="maxWait" value="${maven-core.dataSource.maxWait:5000}" />
+  </bean>
+  <!-- 配置jap会话工厂 -->
+  <bean id="entityManagerFactory"
+    class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="persistenceXmlLocation" value="classpath:persistence.xml" />
+    <property name="persistenceUnitName" value="heading" />
+  </bean>
+ <!--  配置jdbctemplate -->
+  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" abstract="false"  
+        lazy-init="false" autowire="default" >  
+        <property name="dataSource">  
+            <ref bean="dataSource" />  
+        </property>  
+   </bean> 
+  <!--   指定事物声明的配置方式：使用注解的方式 -->
+  <tx:annotation-driven transaction-manager="transactionManager" />
+  <!--  配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+   </bean>
+</beans>
